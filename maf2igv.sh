@@ -12,6 +12,7 @@ NBAM1=$1; shift
 TBAM2=$1; shift
 NBAM2=$1; shift
 TBAM3=$1; shift
+NBAM3=$1; shift
 XBAM=$1; shift
 OUT=$1; shift
 REF=$1; shift
@@ -21,36 +22,55 @@ XID=$1; shift
 PORT=$1; shift
 IGVMEM=$1; shift
 
-echo "ID: ${ID}"
-echo "MAF: ${MAF}" 
-echo "Tumor Sample ${TSAM}" 
-echo "Normal Sample ${NSAM}" 
-echo "Tumor bam capture ${TBAM1}" 
-echo "Normal bam capture ${NBAM1}" 
-echo "Tumor bam wgs ${TBAM2}" 
-echo "Normal bam wgs ${NBAM2}"
-echo "Tumor bam RNA ${TBAM3}" 
-echo "Normal bam RNA ${NBAM3}" 
-echo "Xtra bam ${XBAM}" 
-echo "output area ${OUT}" 
-echo "reference genome ${REF}" 
-echo "window height (pixels) ${WINH}" 
-echo "window width (bp) ${WIND}" 
-echo "X-display ID ${XID}" 
-echo "IGV port ${PORT}" 
-echo "IGV memory ${IGVMEM}" 
+echo "ID:	${ID}"
+echo "MAF:	${MAF}" 
+echo "Tumor Sample:		${TSAM}" 
+echo "Normal Sample:	${NSAM}" 
+echo "Tumor bam capture:${TBAM1}" 
+echo "Normal bam capture:${NBAM1}" 
+echo "Tumor bam wgs:	${TBAM2}" 
+echo "Normal bam wgs:	${NBAM2}"
+echo "Tumor bam RNA:	${TBAM3}" 
+echo "Normal bam RNA:	${NBAM3}" 
+echo "any other bam:	${XBAM}" 
+echo "output area:		${OUT}" 
+echo "reference genome:	${REF}" 
+echo "window height (pixels):${WINH}" 
+echo "window width (bp):	${WIND}" 
+echo "X-display ID:		${XID}" 
+echo "IGV port:		${PORT}" 
+echo "IGV memory:		${IGVMEM}" 
 
 
 Dir=`dirname $0`
+
+echo ""
+echo "maf2igv python command line: "
+echo "python $Dir/maf2igv.py -i $ID -m $MAF -t $TSAM -n $NSAM -C $TBAM1 -W $TBAM2 -R $TBAM3 -c $NBAM1 -w $NBAM2 -r $NBAM3 -X $XBAM -g $REF -x $WINH -b $WIND -o $OUT"
+
 python $Dir/maf2igv.py -i $ID -m $MAF -t $TSAM -n $NSAM -C $TBAM1 -W $TBAM2 -R $TBAM3 -c $NBAM1 -w $NBAM2 -r $NBAM3 -X $XBAM -g $REF -x $WINH -b $WIND -o $OUT
 
-$igvcommands = ${OUT}/${ID}.IGV.bat
-dos2unix $igvcommands
+echo ""
 
-Xvnc :$XID -SecurityTypes None -depth 16 -geometry 1024x768 -rfbport $PORT &
+igvcommands=${OUT}/${ID}.IGV.bat
+echo "igv commands: " $igvcommands
 
+echo ""
+wc -l $igvcommands
+
+echo ""
+Xvnc :${XID} -SecurityTypes None -depth 16 -geometry 1024x768 -rfbport ${PORT} &
+echo "Xvnc :${XID} -SecurityTypes None -depth 16 -geometry 1024x768 -rfbport ${PORT}" 
+
+echo ""
 DISPLAY=localhost:$XID
+echo $DISPLAY 
 
-java -Dapple.laf.useScreenMenuBar=true -Xmx${IGVMEM}m -jar $Dir/igv.jar -p 60151 -b $igvCommands 
+echo ""
+echo "java -Dapple.laf.useScreenMenuBar=true -Xmx${IGVMEM}m -jar ${Dir}/igv.jar -p 60151 -b ${igvcommands}" 
 
-ps -ef |grep $user | grep $xdisp | grep -v grep | awk '{ print \$2 }' | xargs kill
+#java -Dapple.laf.useScreenMenuBar=true -Xmx${IGVMEM}m -jar $Dir/igv.jar -p 60151 -b ${igvcommands} 
+
+java -Dapple.laf.useScreenMenuBar=true -Xmx${IGVMEM}m -jar $Dir/igv.jar -b ${igvcommands} 
+
+ps -ef |grep $user | grep $XID | grep -v grep | awk '{ print \$2 }' | xargs kill
