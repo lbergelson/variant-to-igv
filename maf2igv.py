@@ -95,9 +95,9 @@ if __name__ == '__main__':
 
     outputFileFP = file(IGV_batch_Filename, 'w')
 
+    outputFileFP.write('new ' + "\n")
     outputFileFP.write('genome ' + genome_reference + "\n")
     outputFileFP.write('maxPanelHeight ' + str(maxPanelHeight) + "\n")
-    outputFileFP.write('new ' + "\n")
     outputFileFP.write('snapshotDirectory ' + output + "\n")
     if os.path.exists(Tbam1):
         bamL=bamlinker(output,Tbam1,Tsample,'capture')
@@ -189,6 +189,8 @@ if __name__ == '__main__':
         outputFileFP.write('snapshot ' + png + "\n")
 
         CountOut = CountOut + 1
+
+    outputFileFP.write('exit ' + "\n")
 
     outputFileFP.close()
 
