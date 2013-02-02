@@ -73,4 +73,4 @@ echo "java -Dapple.laf.useScreenMenuBar=true -Xmx${IGVMEM}m -jar ${Dir}/igv.jar 
 
 java -Dapple.laf.useScreenMenuBar=true -Xmx${IGVMEM}m -jar $Dir/igv.jar -b ${igvcommands} 
 
-ps -ef |grep $user | grep $XID | grep -v grep | awk '{ print \$2 }' | xargs kill
+ps -ef |grep $USER | grep $XID | grep -v grep | awk '{ print $2 }' | xargs kill
