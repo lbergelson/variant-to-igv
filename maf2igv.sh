@@ -58,6 +58,15 @@ echo "igv commands: " $igvcommands
 echo ""
 wc -l $igvcommands
 
+jobId = $LSB_JOBID
+if [[ -z $jobId ]]; then jobId=$$; fi
+XID=$[($jobId%10000)+10000]
+echo "XID: " $XID
+#Xvnc :$display -depth 16
+#DISPLAY=$localhost:$display
+#echo $DISPLAY
+
+
 echo ""
 Xvnc :${XID} -SecurityTypes None -depth 16 -geometry 1024x768 -rfbport ${PORT} &
 echo "Xvnc :${XID} -SecurityTypes None -depth 16 -geometry 1024x768 -rfbport ${PORT}" 
