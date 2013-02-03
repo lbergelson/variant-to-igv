@@ -16,7 +16,7 @@ version: 0.0.6
 #
 # To reference any files that are part of this module, prefix with <libdir>.
 ####
-command: sh <libdir>/maf2igv.sh ${t id} ${f maf} ${t tsample} ${t nsample} ${f tbam1}  ${f nbam1}  ${t,o tbam2}  ${t,o nbam2}  ${t,o tbam3}  ${t,o nbam3}  ${t,o xbam}  ${t,o output}  ${t,o  genome}  ${t,o window_Height_px}  ${t,o window_Width_bp}    ${t,o Xdisplay}  ${t,o Xport}  ${t,o t igv_memory}
+command: sh <libdir>/maf2igv.sh ${t id} ${f maf} ${t tsample} ${t nsample} ${f tbam1}  ${f nbam1}  ${t,o tbam2}  ${t,o nbam2}  ${t,o tbam3}  ${t,o nbam3}  ${t,o xbam}  ${t,o output}  ${t,o  genome}  ${t,o window_Height_px}  ${t,o window_Width_bp}    ${t,o Xdisplay}  ${t,o Xport}  ${t,o igv_memory}
 
 
 ####
