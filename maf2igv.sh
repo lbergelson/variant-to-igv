@@ -58,7 +58,7 @@ echo "igv commands: " $igvcommands
 echo ""
 wc -l $igvcommands
 
-jobId = $LSB_JOBID
+jobId=$LSB_JOBID
 if [[ -z $jobId ]]; then jobId=$$; fi
 XID=$[($jobId%10000)+10000]
 echo "XID: " $XID
