@@ -55,6 +55,14 @@ echo ""
 igvcommands=${OUT}/${ID}.IGV.bat
 echo "igv commands: " $igvcommands
 
+#jobId = $LSB_JOBID
+#if [[ -z $jobId ]]; then jobId=123456789; fi
+#let display=$[($XID%10000)+10000]
+#Xvnc :$display -depth 16
+#DISPLAY=$localhost:$display
+#echo $DISPLAY
+
+
 echo ""
 wc -l $igvcommands
 
@@ -63,7 +71,7 @@ Xvnc :${XID} -SecurityTypes None -depth 16 -geometry 1024x768 -rfbport ${PORT} &
 echo "Xvnc :${XID} -SecurityTypes None -depth 16 -geometry 1024x768 -rfbport ${PORT}" 
 
 echo ""
-DISPLAY=localhost:$XID
+DISPLAY=$localhost:$XID
 echo $DISPLAY 
 
 echo ""
