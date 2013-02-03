@@ -72,7 +72,7 @@ Xvnc :${XID} -SecurityTypes None -depth 16 -geometry 1024x768 -rfbport ${PORT} &
 echo "Xvnc :${XID} -SecurityTypes None -depth 16 -geometry 1024x768 -rfbport ${PORT}" 
 
 echo ""
-DISPLAY=localhost:$XID
+export DISPLAY=localhost:$XID
 echo $DISPLAY 
 
 echo ""
