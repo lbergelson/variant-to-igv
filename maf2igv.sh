@@ -67,12 +67,22 @@ DISPLAY=localhost:$XID
 echo $DISPLAY 
 
 echo ""
+echo "output area annotation file"
+echo $PWD/${OUT} > ${OUT}/${ID}.snapshots.txt
+find ${PWD}/${OUT}/${ID}.snapshots.txt
+
+
+
+echo ""
 echo "java -Dapple.laf.useScreenMenuBar=true -Xmx${IGVMEM}m -jar ${Dir}/igv.jar -p 60151 -b ${igvcommands}" 
 
 #java -Dapple.laf.useScreenMenuBar=true -Xmx${IGVMEM}m -jar $Dir/igv.jar -p 60151 -b ${igvcommands} 
 
 java -Dapple.laf.useScreenMenuBar=true -Xmx${IGVMEM}m -jar $Dir/igv.jar -b ${igvcommands} 
 
+echo ""
+echo "stop Xvnc"
+
 ps -ef |grep $USER | grep $XID | grep -v grep | awk '{ print $2 }' | xargs kill
 
-echo $PWD/${OUT} > ${OUT}/${ID}.snapshots.txt
+echo "done"
