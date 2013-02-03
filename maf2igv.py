@@ -60,9 +60,10 @@ def bamlinker(output,bamfile,sample,bamtype):
         baifile=bamfile.replace('.bam','.bai')
         if not os.path.exists(baifile):
             baifile=bamfile+'.bai'
+            
         if not os.path.exists(baifile):
-        	print "missing bam index file:", bamfile
-		    raise
+			print "missing bam index file:", bamfile
+			raise
         baiL = output + '/' + sample + '.' + bamtype + '.bai'
         if not os.path.lexists(baiL):
             os.symlink(baifile, baiL)
