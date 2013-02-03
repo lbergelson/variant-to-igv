@@ -52,7 +52,7 @@ python $Dir/maf2igv.py -i $ID -m $MAF -t $TSAM -n $NSAM -C $TBAM1 -W $TBAM2 -R $
 
 echo ""
 
-igvcommands=${OUT}/${ID}.IGV.bat
+igvcommands=${OUT}/${ID}.IGV.cmd
 echo "igv commands: " $igvcommands
 
 echo ""
@@ -92,6 +92,8 @@ java -Dapple.laf.useScreenMenuBar=true -Xmx${IGVMEM}m -jar $Dir/igv.jar -b ${igv
 echo ""
 echo "stop Xvnc"
 
-ps -ef |grep $USER | grep $XID | grep -v grep | awk '{ print $2 }' | xargs kill
+ps -ef |grep $USER | grep $XID | grep Xvnc| grep -v grep 
+ps -ef |grep $USER | grep $XID | grep Xvnc| grep -v grep | awk '{ print $2 }' 
+ps -ef |grep $USER | grep $XID | grep Xvnc| grep -v grep | awk '{ print $2 }' | xargs kill
 
 echo "done"
