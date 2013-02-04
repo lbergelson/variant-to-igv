@@ -42,5 +42,5 @@ projectDirs: .
 
 [runtime]
 #executor: LSF
-#max_memory: 7
+max_memory: 7
 #lsf_queue:
