@@ -160,32 +160,32 @@ if __name__ == '__main__':
         CountIn = CountIn + 1
 
         if not(tum_sample_id == Lsample):
-            print(str(CountIn)+"\t"+Lsample)
+            print('.  '+str(CountIn)+"\t"+Lsample)
 
         Lsample = tum_sample_id
 
         if not(tum_sample_id == Tsample):
             continue
 
-        nor_sample_id = line['Matched_Norm_Sample_Barcode']
+        #nor_sample_id = line['Matched_Norm_Sample_Barcode']
         Chromosome = line['Chromosome']
         Start_position = int(line['Start_position'])
-        End_position = int(line['End_position'])
+        #End_position = int(line['End_position'])
         Gene = line['Hugo_Symbol']
-        Vtype = line['Variant_Type']
+        #Vtype = line['Variant_Type']
         Vclass = line['Variant_Classification']
 
         # band-aid broken MT reference dictionary
         if 'M' is line['Chromosome']:
                 line['Chromosome']='MT'
 
-        key = line['Chromosome'] + ":" + line['Start_position']
+        #key = line['Chromosome'] + ":" + line['Start_position']
 
         p1=Start_position-half_window_bp
         p2=Start_position+half_window_bp
 
         outputFileFP.write('goto ' + Chromosome + ":" + str(p1) + "-" + str(p2) + "\n")
-        print((line['Chromosome'] + "\t" + line['Start_position'] +"\t" + FromTo))
+        print(("snapshot:\t"+ line['Chromosome'] + "\t" + line['Start_position'] +"\t" + FromTo))
 
         outputFileFP.write('sort base' + "\n")
 
