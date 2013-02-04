@@ -18,8 +18,6 @@ OUT=$1; shift
 REF=$1; shift
 WINH=$1; shift
 WIND=$1; shift
-XID=$1; shift
-PORT=$1; shift
 IGVMEM=$1; shift
 
 echo "ID:	${ID}"
@@ -37,8 +35,6 @@ echo "output area:		${OUT}"
 echo "reference genome:	${REF}" 
 echo "window height (pixels):${WINH}" 
 echo "window width (bp):	${WIND}" 
-echo "X-display ID:		${XID}" 
-echo "IGV port:		${PORT}" 
 echo "IGV memory:		${IGVMEM}" 
 
 
@@ -79,8 +75,6 @@ echo ""
 echo "output area annotation file"
 echo $PWD/${OUT} > ${OUT}/${ID}.snapshots.txt
 find ${PWD}/${OUT}/${ID}.snapshots.txt
-
-
 
 echo ""
 echo "igv command:"
