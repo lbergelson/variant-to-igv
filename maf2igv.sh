@@ -68,7 +68,7 @@ echo "XID: " $XID
 
 
 echo ""
-Xvnc :${XID} -SecurityTypes None -depth 16 -geometry 1024x768 &
+Xvnc :${XID} -SecurityTypes None -depth 16 -geometry 1024x768  &
 echo "Xvnc :${XID} -SecurityTypes None -depth 16 -geometry 1024x768 -rfbport ${PORT}" 
 
 echo ""
@@ -83,7 +83,8 @@ find ${PWD}/${OUT}/${ID}.snapshots.txt
 
 
 echo ""
-echo "java -Dapple.laf.useScreenMenuBar=true -Xmx${IGVMEM}m -jar ${Dir}/igv.jar -p 60151 -b ${igvcommands}" 
+echo "igv command:"
+echo "java -Dapple.laf.useScreenMenuBar=true -Xmx${IGVMEM}m -jar ${Dir}/igv.jar -b ${igvcommands}" 
 
 #java -Dapple.laf.useScreenMenuBar=true -Xmx${IGVMEM}m -jar $Dir/igv.jar -p 60151 -b ${igvcommands} 
 

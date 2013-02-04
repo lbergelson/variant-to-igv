@@ -96,7 +96,7 @@ if __name__ == '__main__':
         os.makedirs(output)
 
     # Create the IGV batch output file
-    IGV_batch_Filename = output + '/' + id + '.IGV.bat'
+    IGV_batch_Filename = output + '/' + id + '.IGV.cmd'
 
     outputFileFP = file(IGV_batch_Filename, 'w')
 
