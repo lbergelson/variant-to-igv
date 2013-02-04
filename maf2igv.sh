@@ -68,7 +68,7 @@ echo "XID: " $XID
 
 
 echo ""
-Xvnc :${XID} -SecurityTypes None -depth 16 -geometry 1024x768 -rfbport ${PORT} &
+Xvnc :${XID} -SecurityTypes None -depth 16 -geometry 1024x768 &
 echo "Xvnc :${XID} -SecurityTypes None -depth 16 -geometry 1024x768 -rfbport ${PORT}" 
 
 echo ""
