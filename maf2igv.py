@@ -143,6 +143,11 @@ if __name__ == '__main__':
 
     inputFileFP.seek(0,0)
 
+    has_fromto = line.find('Reference_Allele')>=0 and line.find('Tumor_Seq_Allele1')>=0
+    has_sample_id = line.find('Tumor_Sample_Barcode')>=0
+    has_gene = line.find('Hugo_Symbol')>=0
+    has_class = line.find('Variant_Classification')>=0
+
     # Read until all comment lines have been read.  Discard comment lines
     for i in range(0,numComments):
         inputFileFP.readline()
@@ -153,33 +158,41 @@ if __name__ == '__main__':
     CountIn = 0
     CountOut = 0
 
+    FromTo=''
+    tum_sample_id = ''
+    gene = ''
+    Vclass= ''
+
     for line in inputTSVReader:
-        FromTo = line['Reference_Allele'] + '_' + line['Tumor_Seq_Allele1']
-        tum_sample_id = line['Tumor_Sample_Barcode']
 
         CountIn = CountIn + 1
 
-        if not(tum_sample_id == Lsample):
-            print('.  '+str(CountIn)+"\t"+Lsample)
+        Chromosome = line['Chromosome']
+        Start_position = int(line['Start_position'])
+        
+        if (has_fromto):
+            FromTo = '.'+line['Reference_Allele'] + '_' + line['Tumor_Seq_Allele1']
+
+        if (has_sample_id):
+            tum_sample_id = line['Tumor_Sample_Barcode']
+            if not(tum_sample_id == Lsample):
+                print('.  '+str(CountIn)+"\t"+Lsample)
+
 
         Lsample = tum_sample_id
 
-        if not(tum_sample_id == Tsample):
+        if (has_sample_id and not(tum_sample_id == Tsample)):
             continue
 
-        #nor_sample_id = line['Matched_Norm_Sample_Barcode']
-        Chromosome = line['Chromosome']
-        Start_position = int(line['Start_position'])
-        #End_position = int(line['End_position'])
-        Gene = line['Hugo_Symbol']
-        #Vtype = line['Variant_Type']
-        Vclass = line['Variant_Classification']
+        if (has_gene):
+            Gene = '.'+line['Hugo_Symbol']
+
+        if (has_class):
+            Vclass = '.'+ line['Variant_Classification']
 
         # band-aid broken MT reference dictionary
         if 'M' is line['Chromosome']:
                 line['Chromosome']='MT'
-
-        #key = line['Chromosome'] + ":" + line['Start_position']
 
         p1=Start_position-half_window_bp
         p2=Start_position+half_window_bp
@@ -189,7 +202,7 @@ if __name__ == '__main__':
 
         outputFileFP.write('sort base' + "\n")
 
-        png = id + '_' + Gene + '_' + Chromosome + '_' + str(Start_position) + '_'+ Vclass + '_' + FromTo + '.png'
+        png = id + Gene + '.' + Chromosome + '_' + str(Start_position) + Vclass + FromTo + '.png'
 
         outputFileFP.write('snapshot ' + png + "\n")
 
