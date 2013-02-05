@@ -40,6 +40,8 @@ projectDirs: .
 ####
 #execDir: .
 
+installTarget = firehose
+
 [runtime]
 #executor: LSF
 max_memory: 7
