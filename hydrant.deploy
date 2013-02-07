@@ -9,7 +9,7 @@ name: maf2igv
 ####
 # Module version
 ####
-version: 0.0.26
+version: 0.0.27
 
 ####
 # Command line to be invoked to run this job
