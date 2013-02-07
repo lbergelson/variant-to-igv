@@ -27,6 +27,7 @@ def parseOptions():
         Required columns in the input file (case sensitive):
              Chromosome
              Start_position
+             
         Optional fields:
              Tumor_Sample_Barcode - select only events with tumor_sample_id = Tumor_Sample_Barcode
              Hugo_Symbol Variant_Classification Reference_Allele Tumor_Seq_Allele1
