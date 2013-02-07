@@ -25,10 +25,12 @@ def parseOptions():
         [outputFile].IGV.log
 
         Required columns in the input file (case sensitive):
-            'Chromosome'
-            'Start_position'
-            'Tumor_Sample_Barcode'
-            'Normal_Sample_Barcode'
+             Chromosome
+             Start_position
+        Optional fields:
+             Tumor_Sample_Barcode - select only events with tumor_sample_id = Tumor_Sample_Barcode
+             Hugo_Symbol Variant_Classification Reference_Allele Tumor_Seq_Allele1
+             
             '''
     parser = argparse.ArgumentParser(description=description, epilog=epilog)
     parser.add_argument('-i','--individual_id', metavar='individual_id', type=str, help ='Individual id.')
@@ -42,6 +44,7 @@ def parseOptions():
     parser.add_argument('-W','--t_bam_wgs', metavar='t_bam_wgs',type=str, help ='tumor clean_bam_file_wgs.',default='')
     parser.add_argument('-R','--t_bam_rna',metavar='t_bam_rna', type=str, help='tumor bam_file_rna_analysis_ready.',default='')
     parser.add_argument('-X','--bam_x',metavar='bam_x', type=str, help='other bam_file.',default='')
+    parser.add_argument('-s','--seg_file', metavar='seg_file',type=str, help='SCNA seg file.',default='')
     parser.add_argument('-o','--output', metavar='output',type=str, help='output stub',default='IGV_snapshot')
     parser.add_argument('-g','--genome_reference', metavar='genome_reference',type=str, help='genome_reference.',default='hg19')
     parser.add_argument('-x','--maxPanelHeight', metavar='maxPanelHeight',type=int, help='maxPanelHeight.',default=400)
@@ -70,6 +73,16 @@ def bamlinker(output,bamfile,sample,bamtype):
         bamlink = os.path.abspath(bamL)
         return bamlink
 
+def seglinker(output,segfile,sample,bamtype):
+
+        seglink=''
+        segL = output + '/' + sample + '.' + bamtype +'.seg.txt'
+        if not os.path.lexists(segL):
+            os.symlink(segfile, segL)
+
+        seglink = os.path.abspath(segL)
+        return seglink
+
 if __name__ == '__main__':
 
     args = parseOptions()
@@ -84,6 +97,7 @@ if __name__ == '__main__':
     Tbam2 = args.t_bam_wgs
     Tbam3 = args.t_bam_rna
     Xbam  = args.bam_x
+    seg_file  = args.seg_file
     output = args.output
     genome_reference = args.genome_reference
     maxPanelHeight = args.maxPanelHeight
@@ -132,6 +146,10 @@ if __name__ == '__main__':
         bamL=bamlinker(output,Xbam,Tsample,'other')
         outputFileFP.write('load ' + bamL + "\n")
 
+    if os.path.exists(seg_file):
+        segL=seglinker(output,seg_file,Tsample,'CNV')
+        outputFileFP.write('load ' + segL + "\n")
+
     outputFileFP.write('echo loaded ' + "\n")
 
   
@@ -160,7 +178,7 @@ if __name__ == '__main__':
 
     FromTo=''
     tum_sample_id = ''
-    gene = ''
+    Gene = ''
     Vclass= ''
 
     for line in inputTSVReader:
@@ -198,7 +216,7 @@ if __name__ == '__main__':
         p2=Start_position+half_window_bp
 
         outputFileFP.write('goto ' + Chromosome + ":" + str(p1) + "-" + str(p2) + "\n")
-        print(("snapshot:\t"+ line['Chromosome'] + "\t" + line['Start_position'] +"\t" + FromTo))
+        print(("snapshot:\t"+ id + Gene + line['Chromosome'] + ":" + line['Start_position']  + Vclass + FromTo))
 
         outputFileFP.write('sort base' + "\n")
 
