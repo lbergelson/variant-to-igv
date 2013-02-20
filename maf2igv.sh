@@ -78,11 +78,11 @@ find ${PWD}/${OUT}/${ID}.snapshots.txt
 
 echo ""
 echo "igv command:"
-echo "java -Dapple.laf.useScreenMenuBar=true -Xmx${IGVMEM}m -jar ${Dir}/igv.jar -b ${igvcommands}" 
+echo "java -Dapple.laf.useScreenMenuBar=true -Xmx${IGVMEM}m -jar ${Dir}/igv.jar -b ${igvcommands} -o ${Dir}/igv.prefs.properties" 
 
 #java -Dapple.laf.useScreenMenuBar=true -Xmx${IGVMEM}m -jar $Dir/igv.jar -p 60151 -b ${igvcommands} 
 
-java -Dapple.laf.useScreenMenuBar=true -Xmx${IGVMEM}m -jar $Dir/igv.jar -b ${igvcommands} 
+java -Dapple.laf.useScreenMenuBar=true -Xmx${IGVMEM}m -jar $Dir/igv.jar -b ${igvcommands} -o ${Dir}/igv.prefs.properties
 
 echo ""
 echo "stop Xvnc"
