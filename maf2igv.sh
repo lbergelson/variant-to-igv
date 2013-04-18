@@ -20,22 +20,22 @@ WINH=$1; shift
 WIND=$1; shift
 IGVMEM=$1; shift
 
-echo "ID:	${ID}"
-echo "MAF:	${MAF}" 
-echo "Tumor Sample:		${TSAM}" 
-echo "Normal Sample:	${NSAM}" 
-echo "Tumor bam capture:${TBAM1}" 
-echo "Normal bam capture:${NBAM1}" 
-echo "Tumor bam wgs:	${TBAM2}" 
-echo "Normal bam wgs:	${NBAM2}"
-echo "Tumor bam RNA:	${TBAM3}" 
-echo "Normal bam RNA:	${NBAM3}" 
-echo "any other bam:	${XBAM}" 
-echo "output area:		${OUT}" 
-echo "reference genome:	${REF}" 
+echo "ID:               	${ID}"
+echo "MAF:              	${MAF}" 
+echo "Tumor Sample:     	${TSAM}" 
+echo "Normal Sample:    	${NSAM}" 
+echo "Tumor bam capture:	${TBAM1}" 
+echo "Normal bam capture:	${NBAM1}" 
+echo "Tumor bam wgs:    	${TBAM2}" 
+echo "Normal bam wgs:   	${NBAM2}"
+echo "Tumor bam RNA:    	${TBAM3}" 
+echo "Normal bam RNA:   	${NBAM3}" 
+echo "any other bam:    	${XBAM}" 
+echo "output area:      	${OUT}" 
+echo "reference genome:		${REF}" 
 echo "window height (pixels):${WINH}" 
 echo "window width (bp):	${WIND}" 
-echo "IGV memory:		${IGVMEM}" 
+echo "IGV memory:        	${IGVMEM}" 
 
 
 Dir=`dirname $0`
@@ -53,6 +53,16 @@ echo "igv commands: " $igvcommands
 
 echo ""
 wc -l $igvcommands
+
+last_line=$( tail -1 "${igvcommands}" )
+if [[ " $last_line " =~ "\s+exit\s+" ]] 
+    then
+        echo "$igvcommands complete "
+    else
+        echo "error $igvcommands missing 'exit' in last line  "
+        return 1
+fi
+
 
 jobId=$LSB_JOBID
 if [[ -z $jobId ]]; then jobId=$$; fi
