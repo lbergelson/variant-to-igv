@@ -44,5 +44,5 @@ installTarget = firehose
 
 [runtime]
 #executor: LSF
-max_memory: 7
+max_memory: 4
 #lsf_queue:
