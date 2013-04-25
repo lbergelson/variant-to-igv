@@ -101,4 +101,8 @@ ps -ef |grep $USER | grep $XID | grep Xvnc| grep -v grep
 ps -ef |grep $USER | grep $XID | grep Xvnc| grep -v grep | awk '{ print $2 }' 
 ps -ef |grep $USER | grep $XID | grep Xvnc| grep -v grep | awk '{ print $2 }' | xargs kill
 
+rm -fv ${OUT}/*.bam
+rm -fv ${OUT}/*.bai
+
+
 echo "done"
