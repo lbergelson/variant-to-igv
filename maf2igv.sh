@@ -46,6 +46,10 @@ echo "python $Dir/maf2igv.py -i $ID -m $MAF -t $TSAM -n $NSAM -C $TBAM1 -W $TBAM
 
 python $Dir/maf2igv.py -i $ID -m $MAF -t $TSAM -n $NSAM -C $TBAM1 -W $TBAM2 -R $TBAM3 -c $NBAM1 -w $NBAM2 -r $NBAM3 -X $XBAM -g $REF -x $WINH -b $WIND -o $OUT
 
+if [[ $? -ne 0 ]] ; then
+   exit 1
+fi
+
 echo ""
 
 igvcommands=${OUT}/${ID}.IGV.cmd
@@ -60,7 +64,7 @@ if [[ " $last_line " =~ "\s+exit\s+" ]]
         echo "$igvcommands complete "
     else
         echo "error $igvcommands missing 'exit' in last line  "
-        return 1
+        exit 1
 fi
 
 
