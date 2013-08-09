@@ -119,33 +119,20 @@ if __name__ == '__main__':
     outputFileFP.write('genome ' + genome_reference + "\n")
     outputFileFP.write('maxPanelHeight ' + str(maxPanelHeight) + "\n")
     outputFileFP.write('snapshotDirectory ' + output + "\n")
-    if os.path.exists(Tbam1):
-        bamL=bamlinker(output,Tbam1,Tsample,'capture')
-        outputFileFP.write('load ' + bamL + "\n")
 
-    if os.path.exists(Nbam1):
-        bamL=bamlinker(output,Nbam1,Nsample,'capture')
-        outputFileFP.write('load ' + bamL + "\n")
+    def writeLoadBam(bam, sample, label):
+        if os.path.exists(bam):
+            bamL=bamlinker(output,bam,sample,label)
+            outputFileFP.write('load ' + bamL + "\n")
 
-    if os.path.exists(Tbam2):
-        bamL=bamlinker(output,Tbam2,Tsample,'wgs')
-        outputFileFP.write('load ' + bamL + "\n")
+    writeLoadBam(Tbam1, Tsample, 'capture')
+    writeLoadBam(Nbam1, Nsample, 'capture')
+    writeLoadBam(Tbam2, Tsample, 'wgs')
+    writeLoadBam(Nbam2, Nsample, 'wgs')
+    writeLoadBam(Tbam3, Tsample, 'rna')
+    writeLoadBam(Nbam3, Nsample, 'rna')
+    writeLoadBam(Xbam, Tsample, 'other')
 
-    if os.path.exists(Nbam2):
-        bamL=bamlinker(output,Nbam2,Nsample,'wgs')
-        outputFileFP.write('load ' + bamL + "\n")
-
-    if os.path.exists(Tbam3):
-        bamL=bamlinker(output,Tbam3,Tsample,'rna')
-        outputFileFP.write('load ' + bamL + "\n")
-
-    if os.path.exists(Nbam3):
-        bamL=bamlinker(output,Nbam3,Nsample,'rna')
-        outputFileFP.write('load ' + bamL + "\n")
-     
-    if os.path.exists(Xbam):
-        bamL=bamlinker(output,Xbam,Tsample,'other')
-        outputFileFP.write('load ' + bamL + "\n")
 
     if os.path.exists(seg_file):
         segL=seglinker(output,seg_file,Tsample,'CNV')
