@@ -1,7 +1,8 @@
-package org.broadinstitute.cga.tools.gatk.walkers.cancer.simulation;
+package org.broadinstitute.cga.tools.gatk.walkers.cancer.visualize;
 
 import org.broadinstitute.sting.commandline.Argument;
 import org.broadinstitute.sting.commandline.ArgumentCollection;
+import org.broadinstitute.sting.commandline.Input;
 import org.broadinstitute.sting.commandline.Output;
 import org.broadinstitute.sting.gatk.arguments.StandardVariantContextInputArgumentCollection;
 import org.broadinstitute.sting.gatk.contexts.AlignmentContext;
@@ -18,6 +19,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -36,6 +38,9 @@ public class VariantToIgvScript extends RodWalker<String, StringBuffer>{
 
     @Argument(fullName="igv_reference_genome", shortName="igv_ref", doc="name of reference genome to pass to igv")
     String igv_ref = "hg19";
+
+    @Input(fullName="input_bam", shortName="bam", doc="A bam to add to the igv screenshot")
+    List<File> bams = Collections.emptyList();
 
     @Output(fullName="igv_script_file", shortName="igv", doc="Name of igv script file to output")
     File igv_script = null;
@@ -121,7 +126,7 @@ public class VariantToIgvScript extends RodWalker<String, StringBuffer>{
         StringBuffer result = new StringBuffer();
 
         Collection<SAMReaderID> bamReaders = getToolkit().getReadsDataSource().getReaderIDs();
-        for( SAMReaderID id : bamReaders){
+        for( File bam: bams){
 //            List<String> bamTags = id.getTags().getPositionalTags();
 //            if(bamTags.size() == 2){
 //
@@ -132,7 +137,7 @@ public class VariantToIgvScript extends RodWalker<String, StringBuffer>{
 //                        "and be given a label, i.e. -I:tumor,whole_genome");
 //            }
 
-            result.append("load %s\n".format(id.getSamFilePath()));
+            result.append("load %s\n".format(bam.getAbsolutePath() ) );
 
         }
 
