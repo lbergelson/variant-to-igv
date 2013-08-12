@@ -41,19 +41,19 @@ echo "IGV memory:        	${IGVMEM}"
 Dir=`dirname $0`
 
 echo ""
-echo "maf2igv python command line: "
-echo "python $Dir/maf2igv.py -i $ID -m $MAF -t $TSAM -n $NSAM -C $TBAM1 -W $TBAM2 -R $TBAM3 -c $NBAM1 -w $NBAM2 -r $NBAM3 -X $XBAM -g $REF -x $WINH -b $WIND -o $OUT"
 
-python $Dir/maf2igv.py -i $ID -m $MAF -t $TSAM -n $NSAM -C $TBAM1 -W $TBAM2 -R $TBAM3 -c $NBAM1 -w $NBAM2 -r $NBAM3 -X $XBAM -g $REF -x $WINH -b $WIND -o $OUT
+igvcommands=${OUT}/${ID}.IGV.cmd
+echo "igv commands: " $igvcommands
+
+echo ""
+echo "maf2igv gatk command line: "
+
+java -jar $GATK -T VariantToIgvScript -V $MAF --igv_script_file ${igvcommands} -bam:tumor $TBAM1 -bam:tumor $TBAM2 -bam:tumor $TBAM3 -bam:normal $NBAM1 -bam:normal $NBAM2 -bam:normal $NBAM3 -bam:extra $XBAM --igv_reference_genome $REF --window_width $WIND -out $OUT -R ~/cga_home/reference/human_g1k_v37_decoy.fasta
 
 if [[ $? -ne 0 ]] ; then
    exit 1
 fi
 
-echo ""
-
-igvcommands=${OUT}/${ID}.IGV.cmd
-echo "igv commands: " $igvcommands
 
 echo ""
 wc -l $igvcommands
