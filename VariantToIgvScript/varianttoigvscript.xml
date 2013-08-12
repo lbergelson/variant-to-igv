@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<package name="VariantToIgvScript">
+  <version file="StingText.properties" property="org.broadinstitute.sting.gatk.version" />
+  <executable name="VariantToIgvScript">
+    <main-class name="org.broadinstitute.sting.gatk.CommandLineGATK" />
+    <resource-bundle file="StingText.properties" />
+    <dependencies>
+      <!-- Walkers in this package -->
+      <class name="org.broadinstitute.cga.tools.gatk.walkers.cancer.visualize.VariantToIgvScript" />
+      <!-- Some additional dependencies that bcel is unable to find on its own -->
+      <package name="org.broad.tribble.*" />
+      <package name="org.broadinstitute.cga.tools.gatk.filters" />
+      <package name="org.broadinstitute.sting.commandline" />
+      <package name="org.broadinstitute.sting.gatk.filters" />
+      <package name="org.apache.commons.logging.impl" />
+    </dependencies>
+  </executable>
+</package>
