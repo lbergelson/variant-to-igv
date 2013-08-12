@@ -51,6 +51,10 @@ public class VariantToIgvScript extends RodWalker<String, StringBuffer>{
     public String map(RefMetaDataTracker tracker, ReferenceContext ref, AlignmentContext context) {
         GenomeLoc location = context.getLocation();
 
+        if ( ref == null){
+            return "";
+        }
+
         //TODO make the file names the same as the python version
         String filename = location.toString()+".png";
 
