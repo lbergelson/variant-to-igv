@@ -77,10 +77,11 @@ public class VariantToIgvScript extends RodWalker<String, StringBuffer>{
         int start = location.getStart()-window_width/2;
         int stop = location.getStop()+window_width/2;
 
-        StringBuilder result = new StringBuilder();
-        result.append( "goto %s:%d-%d\n".format(location.getContig(),start,stop) );
-        result.append( " sort base\n");
-        result.append( "snapshot %s\n".format(fileName));
+
+        StringBuffer result = new StringBuffer();
+        result.append( String.format("goto %s:%d-%d %n", location.getContig(),start,stop) );
+        result.append( String.format(" sort base %n"));
+        result.append( String.format("snapshot %s %n",fileName) );
         return result.toString();
     }
     /*
@@ -106,9 +107,9 @@ public class VariantToIgvScript extends RodWalker<String, StringBuffer>{
     @Override
     public StringBuffer reduceInit() {
         StringBuffer result = new StringBuffer();
-        result.append("new \n");
-        result.append("genome %s\n".format(igv_ref));
-        result.append("snapshotDirectory %s\n".format(output_dir.getAbsolutePath()));
+        result.append(String.format("new %n"));
+        result.append(String.format("genome %s %n",igv_ref));
+        result.append(String.format("snapshotDirectory %s %n", output_dir.getAbsolutePath()));
 
         result.append( createLinksAndGenerateLoadStatements());
 
@@ -137,11 +138,11 @@ public class VariantToIgvScript extends RodWalker<String, StringBuffer>{
 //                        "and be given a label, i.e. -I:tumor,whole_genome");
 //            }
 
-            result.append("load %s\n".format(bam.getAbsolutePath() ) );
+            result.append(String.format("load %s %n",bam.getAbsolutePath() ) );
 
         }
 
-        result.append("echo loaded \n");
+        result.append( String.format("echo loaded %n") );
 
         return result.toString();
     }
@@ -149,17 +150,21 @@ public class VariantToIgvScript extends RodWalker<String, StringBuffer>{
 
 
     @Override
-    public StringBuffer reduce(String value, StringBuffer sum) {
-        sum.append(value);
-        return sum;
+    public StringBuffer reduce(String value, StringBuffer result) {
+        result.append(value);
+        return result;
     }
 
     @Override
     public void onTraversalDone(final StringBuffer result) {
+        result.append(String.format("exit %n"));
+
         try (BufferedWriter writer = new BufferedWriter( new FileWriter(igv_script))){
             writer.write(result.toString());
         }   catch (IOException e){
             throw new UserException.CouldNotCreateOutputFile(igv_script,e);
         }
+
+
     }
 }
