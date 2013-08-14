@@ -33,8 +33,11 @@ public class VariantToIgvScript extends RodWalker<String, StringBuffer>{
     @ArgumentCollection
     private StandardVariantContextInputArgumentCollection variantCollection = new StandardVariantContextInputArgumentCollection();
 
-    @Argument(fullName="window_width", shortName="window", doc="width in bp of screenshot", required = false)
+    @Argument(fullName="window_width", shortName="width", doc="width in bp of screenshot", required = false)
     int window_width = 100;
+
+    @Argument(fullName="window_height", shortName="height", doc="height in pixels of screenshot", required = false)
+    int window_height = 400;
 
     @Argument(fullName="igv_reference_genome", shortName="igv_ref", doc="name of reference genome to pass to igv")
     String igv_ref = "hg19";
@@ -80,7 +83,7 @@ public class VariantToIgvScript extends RodWalker<String, StringBuffer>{
 
         StringBuffer result = new StringBuffer();
         result.append( String.format("goto %s:%d-%d %n", location.getContig(),start,stop) );
-        result.append( String.format(" sort base %n"));
+        result.append( String.format("sort base %n"));
         result.append( String.format("snapshot %s %n",fileName) );
         return result.toString();
     }
@@ -109,6 +112,7 @@ public class VariantToIgvScript extends RodWalker<String, StringBuffer>{
         StringBuffer result = new StringBuffer();
         result.append(String.format("new %n"));
         result.append(String.format("genome %s %n",igv_ref));
+        result.append(String.format("maxPanelHeight %s%n",window_height));
         result.append(String.format("snapshotDirectory %s %n", output_dir.getAbsolutePath()));
 
         result.append( createLinksAndGenerateLoadStatements());
