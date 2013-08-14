@@ -64,7 +64,7 @@ public class VariantToIgvScript extends RodWalker<String, StringBuffer>{
         }
 
         //TODO make the file names the same as the python version
-        String filename = location.toString()+".png";
+        String filename = (location.toString()+".png").replace(':','_');
 
         return generatePrintStatement(location, filename);
     }
