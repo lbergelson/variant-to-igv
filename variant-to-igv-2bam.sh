@@ -1,8 +1,8 @@
 #!/bin/sh
-
 source /broad/software/scripts/useuse
-use Python-2.7 
+use Java-1.7 
 
+LIBDIR=$1;shift
 ID=$1;shift
 MAF=$1;shift
 TBAM1=$1;shift
@@ -13,6 +13,7 @@ WINH=$1; shift
 WIND=$1; shift
 IGVMEM=$1; shift
 
+echo "LIBDIR:               ${LIBDIR}"
 echo "ID:               	${ID}"
 echo "MAF:              	${MAF}" 
 echo "Tumor bam capture:   	${TBAM1}" 
@@ -30,11 +31,9 @@ echo ""
 
 igvcommands=${OUT}/${ID}.IGV.cmd
 echo "igv commands: " $igvcommands
-
 echo ""
-echo "maf2igv gatk command line: "
 
-java -jar $GATK -T VariantToIgvScript -V $MAF --igv_script_file ${igvcommands} -bam:tumor $TBAM1 -bam:tumor  $NBAM1 --igv_reference_genome $REF --window_width $WIND -out $OUT -R ~/cga_home/reference/human_g1k_v37_decoy.fasta
+java -jar ${LIBDIR}/VariantToIgvScript.jar -T VariantToIgvScript -V $MAF --igv_script_file ${igvcommands} -bam:tumor $TBAM1 -bam:tumor  $NBAM1 --igv_reference_genome $REF --window_width $WIND -out $OUT -R ~/cga_home/reference/human_g1k_v37_decoy.fasta
 
 if [[ $? -ne 0 ]] ; then
    exit 1

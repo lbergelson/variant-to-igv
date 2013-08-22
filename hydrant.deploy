@@ -4,18 +4,19 @@
 # The name of the project.  If not provided, this will default to
 # the name of the directory containing this file.
 ####
+name: TakeScreenshotsOfVariants
 
 ####
 # Module version
 ####
-version: 0.0.1
+version: 0.0.7
 
 ####
 # Command line to be invoked to run this job
 #
 # To reference any files that are part of this module, prefix with <libdir>.
 ####
-command: sh <libdir>/variant-to-igv-2bam.sh ${t id} ${f variant_file} ${t tsample} ${t nsample} ${f tbam1}  ${f nbam1} ${t,o output}  ${t,o  genome} ${t,o window_Height_px}  ${t,o window_Width_bp}  ${t,o igv_memory}
+command: sh <libdir>/variant-to-igv-2bam.sh <libdir> ${t id} ${f variant_file} ${f tbam1}  ${f nbam1} ${t,o output}  ${t,o  genome} ${t,o window_Height_px}  ${t,o window_Width_bp}  ${t,o igv_memory}
 
 
 ####
