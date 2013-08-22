@@ -12,6 +12,7 @@ REF=$1; shift
 WINH=$1; shift
 WIND=$1; shift
 IGVMEM=$1; shift
+FASTA=$1; shift
 
 echo "LIBDIR:               ${LIBDIR}"
 echo "ID:               	${ID}"
@@ -23,7 +24,7 @@ echo "reference genome:		${REF}"
 echo "window height (pixels):${WINH}" 
 echo "window width (bp):	${WIND}" 
 echo "IGV memory:        	${IGVMEM}" 
-
+echo "Reference Fasta:      ${FASTA}"
 
 Dir=`dirname $0`
 
@@ -33,7 +34,7 @@ igvcommands=${OUT}/${ID}.IGV.cmd
 echo "igv commands: " $igvcommands
 echo ""
 
-java -jar ${LIBDIR}/VariantToIgvScript.jar -T VariantToIgvScript -V $MAF --igv_script_file ${igvcommands} -bam:tumor $TBAM1 -bam:tumor  $NBAM1 --igv_reference_genome $REF --window_width $WIND -out $OUT -R ~/cga_home/reference/human_g1k_v37_decoy.fasta
+java -jar ${LIBDIR}/VariantToIgvScript.jar -T VariantToIgvScript -V $MAF --igv_script_file ${igvcommands} -bam:tumor $TBAM1 -bam:tumor  $NBAM1 --igv_reference_genome $REF --window_width $WIND -out $OUT -R $FASTA
 
 if [[ $? -ne 0 ]] ; then
    exit 1
