@@ -12,6 +12,7 @@ import org.broadinstitute.sting.gatk.refdata.RefMetaDataTracker;
 import org.broadinstitute.sting.gatk.walkers.RodWalker;
 import org.broadinstitute.sting.utils.GenomeLoc;
 import org.broadinstitute.sting.utils.exceptions.UserException;
+import org.broadinstitute.variant.variantcontext.VariantContext;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -59,6 +60,7 @@ public class VariantToIgvScript extends RodWalker<String, StringBuffer>{
     public String map(RefMetaDataTracker tracker, ReferenceContext ref, AlignmentContext context) {
         GenomeLoc location = context.getLocation();
 
+        //check if we're at the last position
         if ( ref == null){
             return "";
         }
@@ -69,8 +71,16 @@ public class VariantToIgvScript extends RodWalker<String, StringBuffer>{
         return generatePrintStatement(location, filename);
     }
 
+    private boolean isIndelSite(RefMetaDataTracker tracker, ReferenceContext ref){
+        List<VariantContext> variantContexts = tracker.getValues(variantCollection.variants, ref.getLocus());
 
-    private String generatePrintStatement(GenomeLoc location, String fileName){
+        for(VariantContext vc : variantContexts){
+            if(vc.isIndel()) return true;
+        }
+        return false;
+    }
+
+    private String generatePrintStatement(GenomeLoc location, String fileName, boolean shiftOne){
 //        def writeSnapshotCommand(outputFile, Chromosome, start, stop):
 //        filename = id + Gene + '.' + Chromosome + '_' + str(Start_position) + Vclass + FromTo + '.png'
 //        print(("snapshot:\t" + filename))
@@ -78,12 +88,12 @@ public class VariantToIgvScript extends RodWalker<String, StringBuffer>{
 //        outputFile.write('sort base\n')
 //        outputFile.write('snapshot ' + filename + "\n")
         int start = location.getStart()-window_width/2;
-        int stop = location.getStop()+window_width/2;
+        int stop = location.getStop()+window_width/2-(location.size());
 
 
         StringBuffer result = new StringBuffer();
         result.append( String.format("goto %s:%d-%d %n", location.getContig(),start,stop) );
-        result.append( String.format("sort base %n"));
+        result.append( String.format("sort base %s:%d-%d %n", location.getContig(),start,stop));
         result.append( String.format("snapshot %s %n",fileName) );
         return result.toString();
     }
@@ -114,6 +124,7 @@ public class VariantToIgvScript extends RodWalker<String, StringBuffer>{
         result.append(String.format("genome %s %n",igv_ref));
         result.append(String.format("maxPanelHeight %s%n",window_height));
         result.append(String.format("snapshotDirectory %s %n", output_dir.getAbsolutePath()));
+        result.append(String.format("squish"));
 
         result.append( createLinksAndGenerateLoadStatements());
 
