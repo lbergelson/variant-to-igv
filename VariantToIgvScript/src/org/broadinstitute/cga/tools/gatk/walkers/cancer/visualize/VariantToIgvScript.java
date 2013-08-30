@@ -68,19 +68,10 @@ public class VariantToIgvScript extends RodWalker<String, StringBuffer>{
         //TODO make the file names the same as the python version
         String filename = (location.toString()+".png").replace(':','_');
 
-        return generatePrintStatement(location, filename);
+        return generatePrintStatement(location, filename );
     }
 
-    private boolean isIndelSite(RefMetaDataTracker tracker, ReferenceContext ref){
-        List<VariantContext> variantContexts = tracker.getValues(variantCollection.variants, ref.getLocus());
-
-        for(VariantContext vc : variantContexts){
-            if(vc.isIndel()) return true;
-        }
-        return false;
-    }
-
-    private String generatePrintStatement(GenomeLoc location, String fileName, boolean shiftOne){
+    private String generatePrintStatement(GenomeLoc location, String fileName){
 //        def writeSnapshotCommand(outputFile, Chromosome, start, stop):
 //        filename = id + Gene + '.' + Chromosome + '_' + str(Start_position) + Vclass + FromTo + '.png'
 //        print(("snapshot:\t" + filename))
@@ -133,28 +124,11 @@ public class VariantToIgvScript extends RodWalker<String, StringBuffer>{
     }
 
     private String createLinksAndGenerateLoadStatements() {
-        /*
-        for(SAMReaderID id : getToolkit().getReadsDataSource().getReaderIDs()) {
-            if (id.getTags().getPositionalTags().size() == 0) {
-                throw new RuntimeException("BAMs must be tagged as either 'tumor' or 'normal'");
-            }
-         */
         StringBuffer result = new StringBuffer();
 
         Collection<SAMReaderID> bamReaders = getToolkit().getReadsDataSource().getReaderIDs();
         for( File bam: bams){
-//            List<String> bamTags = id.getTags().getPositionalTags();
-//            if(bamTags.size() == 2){
-//
-//
-//
-//            } else {
-//                throw new UserException.BadArgumentValue("-I", "Each input bam must be tagged as either tumor or normal, " +
-//                        "and be given a label, i.e. -I:tumor,whole_genome");
-//            }
-
             result.append(String.format("load %s %n",bam.getAbsolutePath() ) );
-
         }
 
         result.append( String.format("echo loaded %n") );
